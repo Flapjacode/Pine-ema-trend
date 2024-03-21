@@ -20,4 +20,5 @@ The wieghted configuration allows for a more accurate averaging.
 first EMA and a "halftrend" model, meaning  that it also takes into account the average of such as
 trend direction+volume+Ema/price = position of the circles. The circles will defualt set to yellow however the other
 part of this is that this feature also predicts change in trend direction. If trend direction's position 
-is < previous trend average the circle will turn red for down trend  and > previous trend is green for up. When the signal is strong enough an arrow will accompany the circle above or bellow. 
+is < previous trend average the circle will turn red for down trend  and > previous trend is green for up. 
+When the signal is strong enough an arrow will accompany the circle above or bellow. 
