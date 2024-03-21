@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<ol>
+<li>
+<p>
+// This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/<br>
+// © Flapjackcoin<br>
+<br>
+//@version=4<br>
+study(title="EMA with Volume Weighted EMA", shorttitle="EMA & VWEMA", overlay = true)<br>
+<br>
+// EMA Parameters<br>
+emaLength = input(14, title="EMA Length")<br>
+emaSource = close<br>
+emaLine = ema(emaSource, emaLength)<br>
+<br>
+// Volume Weighted EMA Parameters<br>
+vwemaLength = input(14, title="VWEMA Length")<br>
+halfVolume = volume / 2<br>
+vwemaSource = close * halfVolume<br>
+vwemaLine = ema(vwemaSource, vwemaLength) / ema(halfVolume, vwemaLength)<br>
+<br>
+// Detect Trend Changes<br>
+emaCrossUp = crossover(emaLine, vwemaLine)<br>
+emaCrossDown = crossunder(emaLine, vwemaLine)<br>
+<br>
+// Change VWEMA color based on trend<br>
+vwemaColor = emaCrossUp ? color.green : emaCrossDown ? color.red : color.rgb(245, 182, 11)<br>
+<br>
+// Plot EMA<br>
+plot(emaLine, color=color.blue, title="EMA Line", linewidth=3)<br>
+<br>
+<br>
+// Plot Circles on VWEMA<br>
+plotshape(series=vwemaLine, location=location.absolute, style=shape.circle, color=vwemaColor, title="VWEMA Circles")<br>
+<br>
+// Plot Arrows<br>
+plotshape(series=emaCrossUp, location=location.belowbar, color=color.green, style=shape.triangleup, title="Up Trend Arrow")<br>
+plotshape(series=emaCrossDown, location=location.abovebar, color=color.red, style=shape.triangledown, title="Down Trend Arrow")<br>
+</li>
+<li>
+
+// This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/ <br>
+// © Flapjackcoin <br>
+<br>
+//@version=5 <br>
+indicator('HalfTrend', overlay=true) <br>
+amplitude = input(title='Amplitude', defval=6) <br>
+channelDeviation = input(title='Channel Deviation', defval=3) <br>
+showArrows = input(title='Show Arrows', defval=true) <br>
+showChannels = input(title='Show Channels', defval=true) <br>
+emaPeriod = input(title='EMA Period', defval=9)  // Add EMA period input <br>
+<br>
+var int trend = 0 <br>
+var int nextTrend = 0 <br>
+var float maxLowPrice = nz(low[1], low) <br>
+var float minHighPrice = nz(high[1], high) <br>
+<br>
+var float up = 0.0 <br>
+var float down = 0.0 <br>
+float atrHigh = 0.0 <br>
+float atrLow = 0.0 <br>
+float arrowUp = na <br>
+float arrowDown = na <br>
+<br>
+atr2 = ta.atr(100) / 2 <br>
+dev = channelDeviation * atr2 <br>
+<br>
+highPrice = high[math.abs(ta.highestbars(amplitude))] <br>
+lowPrice = low[math.abs(ta.lowestbars(amplitude))] <br>
+highma = ta.sma(high, amplitude) <br>
+lowma = ta.sma(low, amplitude) <br>
+<br>
+emaLine = ta.ema(close, emaPeriod)  // Calculate EMA <br>
+<br>
+if nextTrend == 1 <br>
+    maxLowPrice := math.max(lowPrice, maxLowPrice) <br>
+<br>
+    if highma < maxLowPrice and close < nz(low[1], low) --><br>
+        trend := 1 <br>
+        nextTrend := 0 <br>
+        minHighPrice := highPrice <br>
+        minHighPrice <br>
+else <br>
+    minHighPrice := math.min(highPrice, minHighPrice) <br>
+<br>
+    if lowma > minHighPrice and close > nz(high[1], high) <br>
+        trend := 0 <br>
+        nextTrend := 1 <br>
+        maxLowPrice := lowPrice <br>
+        maxLowPrice <br>
+<br>
+if trend == 0 <br>
+    if not na(trend[1]) and trend[1] != 0 <br>
+        up := na(down[1]) ? down : down[1] <br>
+        arrowUp := up - atr2 <br>
+        arrowUp <br>
+    else <br>
+        up := na(up[1]) ? maxLowPrice : math.max(maxLowPrice, up[1]) <br>
+        up <br>
+    atrHigh := up + dev <br>
+    atrLow := up - dev <br>
+    atrLow <br>
+else <br>
+    if not na(trend[1]) and trend[1] != 1 <br>
+        down := na(up[1]) ? up : up[1] <br>
+        arrowDown := down + atr2 <br>
+        arrowDown <br>
+    else <br>
+        down := na(down[1]) ? minHighPrice : math.min(minHighPrice, down[1]) <br>
+        down <br>
+    atrHigh := down + dev <br>
+    atrLow := down - dev <br>
+    atrLow <br>
+<br>
+ht = trend == 0 ? up : down <br>
+<br>
+var color buyColor = color.blue <br>
+var color sellColor = color.red <br>
+<br>
+htColor = trend == 0 ? buyColor : sellColor <br>
+htPlot = plot(ht, title='HalfTrend', linewidth=2, color=htColor) <br>
+<br>
+atrHighPlot = plot(showChannels ? atrHigh : na, title='ATR High', style=plot.style_circles, color=color.new(sellColor, 0)) <br>
+atrLowPlot = plot(showChannels ? atrLow : na, title='ATR Low', style=plot.style_circles, color=color.new(buyColor, 0)) <br>
+<br>
+fill(htPlot, atrHighPlot, title='ATR High Ribbon', color=color.new(sellColor, 90)) <br>
+fill(htPlot, atrLowPlot, title='ATR Low Ribbon', color=color.new(buyColor, 90)) <br>
+<br>
+buySignal = not na(arrowUp) and trend == 0 and trend[1] == 1 <br>
+sellSignal = not na(arrowDown) and trend == 1 and trend[1] == 0 <br>
+<br>
+plotshape(showArrows and buySignal ? atrLow : na, title='Arrow Up', style=shape.triangleup, location=location.absolute, size=size.tiny, color=color.new(buyColor, 0)) <br>
+plotshape(showArrows and sellSignal ? atrHigh : na, title='Arrow Down', style=shape.triangledown, location=location.absolute, size=size.tiny, color=color.new(sellColor, 0)) <br>
+<br>
+alertcondition(buySignal, title='Alert: HalfTrend Buy', message='HalfTrend Buy') <br>
+alertcondition(sellSignal, title='Alert: HalfTrend Sell', message='HalfTrend Sell') <br>
+<br>
+// Hull Moving Average (HMA) Ribbon based on EMA <br>
+lengthHMA = input(9, title="HMA Length") <br>
+srcHMA = close <br>
+halfLength = (lengthHMA / 2) <br>
+ema1 = ta.ema(srcHMA, halfLength) <br>
+ema2 = ta.ema(srcHMA, lengthHMA) <br>
+diff = 2 * ema1 - ema2 <br>
+hullMa = (diff) <br>
+<br>
+plot(hullMa, color=color.rgb(11, 159, 144), title="HMA") <br>
+plot(emaLine, title='EMA', color=color.new(#fff200, 0))  // Plot EMA line <br>
+
+
+</li>
+</p>
+
+</body>
+
+</html>
