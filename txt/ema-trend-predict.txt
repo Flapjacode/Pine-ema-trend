@@ -3,7 +3,10 @@
 //@version=4
 
 //This Indicator is mainly made up of 3 parts:
-  The arrows and use of half trend ontop of wieghted ema is for a more accurate signal. Youll notice that the arrows often appear oppisite of the direction of the current trend, this is not a mistake the point of this indicator is to look at underlying trend indeacators and predict changes in direction before it shows up in the market visibly.
+  The arrows and use of half trend ontop of wieghted ema is for a more accurate signal. Youll notice that 
+the arrows often appear oppisite of the direction of the current trend, this is not a mistake the point of 
+this indicator is to look at underlying trend indeacators and predict changes in direction before it shows 
+up in the market visibly.
 
 //Weighted EMA: 
    This indicator is represented by the EMA defualt length of 14 and color.blue.
