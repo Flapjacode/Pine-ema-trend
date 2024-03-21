@@ -1,45 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <head><meta charset="utf-8">
+
+        <title>Indicators</title>
+</head>
 
 <body>
 <ol>
-<li>
-<p>
-// This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/<br>
-// © Flapjackcoin<br>
-<br>
-//@version=4<br>
-study(title="EMA with Volume Weighted EMA", shorttitle="EMA & VWEMA", overlay = true)<br>
-<br>
-// EMA Parameters<br>
-emaLength = input(14, title="EMA Length")<br>
-emaSource = close<br>
-emaLine = ema(emaSource, emaLength)<br>
-<br>
-// Volume Weighted EMA Parameters<br>
-vwemaLength = input(14, title="VWEMA Length")<br>
-halfVolume = volume / 2<br>
-vwemaSource = close * halfVolume<br>
-vwemaLine = ema(vwemaSource, vwemaLength) / ema(halfVolume, vwemaLength)<br>
-<br>
-// Detect Trend Changes<br>
-emaCrossUp = crossover(emaLine, vwemaLine)<br>
-emaCrossDown = crossunder(emaLine, vwemaLine)<br>
-<br>
-// Change VWEMA color based on trend<br>
-vwemaColor = emaCrossUp ? color.green : emaCrossDown ? color.red : color.rgb(245, 182, 11)<br>
-<br>
-// Plot EMA<br>
-plot(emaLine, color=color.blue, title="EMA Line", linewidth=3)<br>
-<br>
-<br>
-// Plot Circles on VWEMA<br>
-plotshape(series=vwemaLine, location=location.absolute, style=shape.circle, color=vwemaColor, title="VWEMA Circles")<br>
-<br>
-// Plot Arrows<br>
-plotshape(series=emaCrossUp, location=location.belowbar, color=color.green, style=shape.triangleup, title="Up Trend Arrow")<br>
-plotshape(series=emaCrossDown, location=location.abovebar, color=color.red, style=shape.triangledown, title="Down Trend Arrow")<br>
-</li>
 <li>
 
 // This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/ <br>
@@ -78,7 +47,7 @@ emaLine = ta.ema(close, emaPeriod)  // Calculate EMA <br>
 if nextTrend == 1 <br>
     maxLowPrice := math.max(lowPrice, maxLowPrice) <br>
 <br>
-    if highma < maxLowPrice and close < nz(low[1], low) --><br>
+    if highma &lt; maxLowPrice and close &lt; nz(low[1], low) --&gt;<br>
         trend := 1 <br>
         nextTrend := 0 <br>
         minHighPrice := highPrice <br>
@@ -86,7 +55,7 @@ if nextTrend == 1 <br>
 else <br>
     minHighPrice := math.min(highPrice, minHighPrice) <br>
 <br>
-    if lowma > minHighPrice and close > nz(high[1], high) <br>
+    if lowma &gt; minHighPrice and close &gt; nz(high[1], high) <br>
         trend := 0 <br>
         nextTrend := 1 <br>
         maxLowPrice := lowPrice <br>
@@ -150,10 +119,44 @@ hullMa = (diff) <br>
 plot(hullMa, color=color.rgb(11, 159, 144), title="HMA") <br>
 plot(emaLine, title='EMA', color=color.new(#fff200, 0))  // Plot EMA line <br>
 
-
 </li>
-</p>
+<li>// This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+    // © Flapjackcoin
+    
+    //@version=4
+    study(title="EMA with Volume Weighted EMA", shorttitle="EMA & VWEMA", overlay = true)
+    
+    // EMA Parameters
+    emaLength = input(14, title="EMA Length")
+    emaSource = close
+    emaLine = ema(emaSource, emaLength)
+    
+    // Volume Weighted EMA Parameters
+    vwemaLength = input(14, title="VWEMA Length")
+    halfVolume = volume / 2
+    vwemaSource = close * halfVolume
+    vwemaLine = ema(vwemaSource, vwemaLength) / ema(halfVolume, vwemaLength)
+    
+    // Detect Trend Changes
+    emaCrossUp = crossover(emaLine, vwemaLine)
+    emaCrossDown = crossunder(emaLine, vwemaLine)
+    
+    // Change VWEMA color based on trend
+    vwemaColor = emaCrossUp ? color.green : emaCrossDown ? color.red : color.rgb(245, 182, 11)
+    
+    // Plot EMA
+    plot(emaLine, color=color.blue, title="EMA Line", linewidth=3)
+    
+    
+    // Plot Circles on VWEMA
+    plotshape(series=vwemaLine, location=location.absolute, style=shape.circle, color=vwemaColor, title="VWEMA Circles")
+    
+    // Plot Arrows
+    plotshape(series=emaCrossUp, location=location.belowbar, color=color.green, style=shape.triangleup, title="Up Trend Arrow")
+    plotshape(series=emaCrossDown, location=location.abovebar, color=color.red, style=shape.triangledown, title="Down Trend Arrow")
+    </li>
 
+</ol>
 </body>
 
 </html>
